@@ -1,0 +1,10 @@
+export declare function byte(n: number): number;
+export declare function int16(n: number): number;
+export declare function uint16(n: number): number;
+export declare function int32(n: number): number;
+export declare function uint32(n: number): number;
+export declare function constantTimeCompare(x: Uint8Array, y: Uint8Array): number;
+export declare function loadCrypto(): Promise<Crypto>;
+export declare function prf(len: number, seed: Uint8Array, nonce: number): Uint8Array;
+export declare function byteopsLoad24(x: Uint8Array): number;
+export declare function byteopsLoad32(x: Uint8Array): number;

@@ -9,10 +9,10 @@ import {
   shake128,
   shake256,
   // @ts-ignore: for "npm:"
-} from "npm:@noble/hashes@1.3.3/sha3";
+} from "@noble/hashes/sha3";
 
-import { N, NTT_ZETAS, NTT_ZETAS_INV, Q, Q_INV } from "./consts.ts";
-import { KyberError } from "./errors.ts";
+import { N, NTT_ZETAS, NTT_ZETAS_INV, Q, Q_INV } from "./consts.js";
+import { KyberError } from "./errors.js";
 import {
   byte,
   byteopsLoad32,
@@ -23,7 +23,7 @@ import {
   prf,
   uint16,
   uint32,
-} from "./utils.ts";
+} from "./utils.js";
 
 /**
  * Represents the base class for the Kyber key encapsulation mechanism.

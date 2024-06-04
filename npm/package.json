@@ -1,0 +1,50 @@
+{
+  "name": "crystals-kyber-js",
+  "version": "1.0.0",
+  "description": "A CRYSTALS-KYBER implementation written in TypeScript for various JavaScript runtimes",
+  "keywords": [
+    "crystals-kyber",
+    "kyber",
+    "kem",
+    "security",
+    "encryption",
+    "pqc",
+    "post-quantum"
+  ],
+  "author": "Ajitomi Daisuke",
+  "homepage": "https://github.com/dajiaji/crystals-kyber-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dajiaji/crystals-kyber-js.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dajiaji/crystals-kyber-js/issues"
+  },
+  "main": "./script/mod.js",
+  "module": "./esm/mod.js",
+  "types": "./esm/mod.d.ts",
+  "exports": {
+    ".": {
+      "import": "./esm/mod.js",
+      "require": "./script/mod.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node test_runner.js"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@noble/hashes": "1.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "picocolors": "^1.0.0",
+    "@deno/shim-deno": "~0.17.0"
+  },
+  "_generatedBy": "dnt@0.39.0"
+}
