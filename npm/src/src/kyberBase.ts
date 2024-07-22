@@ -169,6 +169,8 @@ export class KyberBase {
     cPrime: null | Uint8Array,
     success: null | boolean,
     Hc: null | Uint8Array,
+    KFail: null | Uint8Array,
+    KSuccess: null | Uint8Array,
   } = {
     skPrime: null,
     Hpk: null,
@@ -180,6 +182,8 @@ export class KyberBase {
     cPrime: null,
     success: null,
     Hc: null,
+    KFail: null,
+    KSuccess: null,
   }
   public _debug_cpa_decrypt:{
     sHat: null | Array<Array<number>>,
@@ -374,10 +378,12 @@ export class KyberBase {
       this._debug_cca_decap.success = success;
       const Hc = h(ct);
       this._debug_cca_decap.Hc = structuredClone(Hc);
+      this._debug_cca_decap.KFail = kdf(z, Hc);
+      this._debug_cca_decap.KSuccess = kdf(kBar2, Hc);
       if (success) {
-        return kdf(kBar2, Hc);
+        return this._debug_cca_decap.KSuccess;
       }
-      return kdf(z, Hc);
+      return this._debug_cca_decap.KFail;
     } catch (e: unknown) {
       throw new KyberError(e);
     }
@@ -477,11 +483,11 @@ export class KyberBase {
     const A_S_mult = new Array<Array<number>>(this._k);
     for (let i = 0; i < this._k; i++) {
       A_S_mult[i] = multiply(a[i], s)
+      A_S_mult[i] = polyToMont(A_S_mult[i]);
     }
     this._debug_cpa_keygen.A_S_mult = structuredClone(A_S_mult);
     for (let i = 0; i < this._k; i++) {
-      pk[i] = polyToMont(A_S_mult[i]);
-      pk[i] = add(pk[i], e[i]);
+      pk[i] = add(A_S_mult[i], e[i]);
       pk[i] = reduce(pk[i]);
     }
     this._debug_cpa_keygen.tHat = structuredClone(pk);

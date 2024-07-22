@@ -100,6 +100,8 @@ export declare class KyberBase {
         cPrime: null | Uint8Array;
         success: null | boolean;
         Hc: null | Uint8Array;
+        KFail: null | Uint8Array;
+        KSuccess: null | Uint8Array;
     };
     _debug_cpa_decrypt: {
         sHat: null | Array<Array<number>>;

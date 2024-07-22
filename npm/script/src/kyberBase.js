@@ -199,6 +199,8 @@
                     cPrime: null,
                     success: null,
                     Hc: null,
+                    KFail: null,
+                    KSuccess: null,
                 }
             });
             Object.defineProperty(this, "_debug_cpa_decrypt", {
@@ -372,10 +374,12 @@
                 this._debug_cca_decap.success = success;
                 const Hc = h(ct);
                 this._debug_cca_decap.Hc = structuredClone(Hc);
+                this._debug_cca_decap.KFail = kdf(z, Hc);
+                this._debug_cca_decap.KSuccess = kdf(kBar2, Hc);
                 if (success) {
-                    return kdf(kBar2, Hc);
+                    return this._debug_cca_decap.KSuccess;
                 }
-                return kdf(z, Hc);
+                return this._debug_cca_decap.KFail;
             }
             catch (e) {
                 throw new errors_js_1.KyberError(e);
@@ -469,11 +473,11 @@
             const A_S_mult = new Array(this._k);
             for (let i = 0; i < this._k; i++) {
                 A_S_mult[i] = multiply(a[i], s);
+                A_S_mult[i] = polyToMont(A_S_mult[i]);
             }
             this._debug_cpa_keygen.A_S_mult = structuredClone(A_S_mult);
             for (let i = 0; i < this._k; i++) {
-                pk[i] = polyToMont(A_S_mult[i]);
-                pk[i] = add(pk[i], e[i]);
+                pk[i] = add(A_S_mult[i], e[i]);
                 pk[i] = reduce(pk[i]);
             }
             this._debug_cpa_keygen.tHat = structuredClone(pk);
