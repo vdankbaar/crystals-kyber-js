@@ -94,7 +94,7 @@ async function runTestDefinitions(testDefinitions, options) {
             name: definition.name,
             parent,
             origin: options.origin,
-            err: undefined,
+            /** @type {any} */ err: undefined,
             status: "ok",
             children: [],
             get hasFailingChild() {
@@ -148,7 +148,7 @@ async function runTestDefinitions(testDefinitions, options) {
                     context.err = err;
                     return false;
                 }
-                function getDefinition() {
+                /** @returns {TestDefinition} */ function getDefinition() {
                     if (typeof nameOrTestDefinition === "string") {
                         if (!(fn instanceof Function)) {
                             throw new TypeError("Expected function for second argument.");

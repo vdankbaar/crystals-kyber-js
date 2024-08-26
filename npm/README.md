@@ -1,4 +1,8 @@
-<h1 align="center">crystals-kyber-js</h1>
+<h1 align="center">Educational fork of crystals-kyber-js</h1>
+
+<div align="center">
+IMPORTANT: This is a modified fork! The rest of the readme below is from the original repo.
+</div>
 
 <div align="center">
 
