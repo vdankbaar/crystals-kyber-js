@@ -23,9 +23,9 @@ await build({
       "A CRYSTALS-KYBER implementation written in TypeScript for various JavaScript runtimes",
     repository: {
       type: "git",
-      url: "git+https://github.com/dajiaji/crystals-kyber-js.git",
+      url: "git+https://github.com/vdankbaar/crystals-kyber-js.git",
     },
-    homepage: "https://github.com/dajiaji/crystals-kyber-js#readme",
+    homepage: "https://github.com/vdankbaar/crystals-kyber-js#readme",
     license: "MIT",
     module: "./esm/mod.js",
     main: "./script/mod.js",
@@ -50,9 +50,9 @@ await build({
     engines: {
       "node": ">=16.0.0",
     },
-    author: "Ajitomi Daisuke",
+    author: "vdankbaar",
     bugs: {
-      url: "https://github.com/dajiaji/crystals-kyber-js/issues",
+      url: "https://github.com/vdankbaar/crystals-kyber-js/issues",
     },
   },
 });

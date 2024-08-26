@@ -1,1 +1,2 @@
+Install deno first.
 Compile by running: deno run -A dnt.ts 1.0.0

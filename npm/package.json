@@ -11,15 +11,15 @@
     "pqc",
     "post-quantum"
   ],
-  "author": "Ajitomi Daisuke",
-  "homepage": "https://github.com/dajiaji/crystals-kyber-js#readme",
+  "author": "vdankbaar",
+  "homepage": "https://github.com/vdankbaar/crystals-kyber-js#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dajiaji/crystals-kyber-js.git"
+    "url": "git+https://github.com/vdankbaar/crystals-kyber-js.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dajiaji/crystals-kyber-js/issues"
+    "url": "https://github.com/vdankbaar/crystals-kyber-js/issues"
   },
   "main": "./script/mod.js",
   "module": "./esm/mod.js",
