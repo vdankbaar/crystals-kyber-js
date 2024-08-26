@@ -17,7 +17,7 @@ await build({
     deno: "dev",
   },
   package: {
-    name: "crystals-kyber-js",
+    name: "crystals-kyber-js-edu",
     version: Deno.args[0],
     description:
       "A CRYSTALS-KYBER implementation written in TypeScript for various JavaScript runtimes",

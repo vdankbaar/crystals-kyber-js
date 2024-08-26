@@ -1,4 +1,4 @@
-src/
+src/**/*
 esm/test/kyber1024.test.js
 esm/test/kyber1024.test.d.ts
 script/test/kyber1024.test.js
