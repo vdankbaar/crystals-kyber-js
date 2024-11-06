@@ -1,5 +1,5 @@
 {
-  "name": "@dajiaji/mlkem",
+  "name": "@vdankbaar/mlkem-edu",
   "version": "2.3.0",
   "exports": "./mod.ts",
   "imports": {
