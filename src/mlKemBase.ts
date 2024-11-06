@@ -67,7 +67,132 @@ export class MlKemBase {
   protected _pkSize = 0;
   protected _compressedUSize = 0;
   protected _compressedVSize = 0;
-
+  public _debug_cca_keygen:{
+    skBody: null | Uint8Array,
+    pk: null | Uint8Array,
+    hpk: null | Uint8Array,
+    z: null | Uint8Array,
+  } = {
+    skBody: null,
+    pk: null,
+    hpk: null,
+    z: null,
+  }
+  public _debug_cpa_keygen:{
+    d: null | Uint8Array,
+    rho: null | Uint8Array,
+    sigma: null | Uint8Array,
+    AHat: null | Array<Array<Array<number>>>,
+    s: null | Array<Array<number>>,
+    sHat: null | Array<Array<number>>,
+    e: null | Array<Array<number>>,
+    eHat: null | Array<Array<number>>,
+    tHat: null | Array<Array<number>>,
+    tBytes: null | Uint8Array,
+    A_S_mult: null | Array<Array<number>>
+  } = {
+    d: null,
+    rho: null,
+    sigma: null,
+    AHat: null,
+    s: null,
+    sHat: null,
+    e: null,
+    eHat: null,
+    tHat: null,
+    tBytes: null,
+    A_S_mult: null,
+  };
+  public _debug_cca_encap:{
+    m: null | Uint8Array,
+    pk: null | Uint8Array,
+    hpk: null | Uint8Array,
+    r: null | Uint8Array,
+    k: null | Uint8Array,
+    ct: null | Uint8Array,
+  } = {
+    m: null,
+    pk: null,
+    hpk: null,
+    r: null,
+    k: null,
+    ct: null,
+  }
+  public _debug_cpa_encrypt:{
+    tHat: null | Array<Array<number>>,
+    rho: null | Uint8Array,
+    AHat: null | Array<Array<Array<number>>>,
+    rPrime: null | Array<Array<number>>,
+    rHat: null | Array<Array<number>>,
+    e1: null | Array<Array<number>>,
+    e2: null | Array<number>,
+    mPrime: null | Array<number>,
+    vHat: null | Array<number>,
+    vPrime: null | Array<number>,
+    uHat: null | Array<Array<number>>,
+    uPrime: null | Array<Array<number>>,
+    u: null | Array<Array<number>>,
+    v: null | Array<number>
+  } = {
+    tHat: null,
+    rho: null,
+    AHat: null,
+    rPrime: null,
+    rHat: null,
+    e1: null,
+    e2: null,
+    mPrime: null,
+    vHat: null,
+    vPrime: null,
+    uHat: null,
+    uPrime: null,
+    u: null,
+    v: null,
+  }
+  public _debug_cca_decap:{
+    ct: null | Uint8Array,
+    sk: null | Uint8Array,
+    sk2: null | Uint8Array,
+    pk: null | Uint8Array,
+    hpk: null | Uint8Array,
+    z: null | Uint8Array,
+    m2: null | Uint8Array,
+    r2: null | Uint8Array,
+    k2: null | Uint8Array,
+    kBar: null | Uint8Array,
+    ct2: null | Uint8Array,
+    success: null | boolean,
+  } = {
+    ct: null,
+    sk: null,
+    sk2: null,
+    pk: null,
+    hpk: null,
+    z: null,
+    m2: null,
+    r2: null,
+    k2: null,
+    kBar: null,
+    ct2: null,
+    success: null,
+  }
+  public _debug_cpa_decrypt:{
+    sHat: null | Array<Array<number>>,
+    u: null | Array<Array<number>>,
+    uHat: null | Array<Array<number>>,
+    vHat: null | Array<number>,
+    vPrime: null | Array<number>,
+    v: null | Array<number>,
+    mPrime: null | Array<number>,
+  } = {
+    sHat: null,
+    u: null,
+    uHat: null,
+    vHat: null,
+    vPrime: null,
+    v: null,
+    mPrime: null,
+  }
   /**
    * Creates a new instance of the MlKemBase class.
    */
@@ -177,9 +302,16 @@ export class MlKemBase {
       if (pk.length !== 384 * this._k + 32) {
         throw new Error("invalid encapsulation key");
       }
+      this._debug_cca_encap.pk = structuredClone(pk)
       const m = this._getSeed(seed);
-      const [k, r] = g(m, h(pk));
+      this._debug_cca_encap.m = structuredClone(m)
+      const hpk = h(pk)
+      this._debug_cca_encap.hpk = structuredClone(hpk)
+      const [k, r] = g(m, hpk);
+      this._debug_cca_encap.r = structuredClone(r)
+      this._debug_cca_encap.k = structuredClone(k)
       const ct = this._encap(pk, m, r);
+      this._debug_cca_encap.ct = structuredClone(ct)
       return [ct, k];
     } catch (e: unknown) {
       throw new MlKemError(e);
@@ -223,22 +355,34 @@ export class MlKemBase {
       if (sk.length !== 768 * this._k + 96) {
         throw new Error("Invalid decapsulation key");
       }
+      this._debug_cca_decap.ct = structuredClone(ct);
+      this._debug_cca_decap.sk = structuredClone(sk);
       const sk2 = sk.subarray(0, this._skSize);
+      this._debug_cca_decap.sk2 = structuredClone(sk2);
       const pk = sk.subarray(this._skSize, this._skSize + this._pkSize);
+      this._debug_cca_decap.pk = structuredClone(pk);
       const hpk = sk.subarray(
         this._skSize + this._pkSize,
         this._skSize + this._pkSize + 32,
       );
+      this._debug_cca_decap.hpk = structuredClone(hpk);
       const z = sk.subarray(
         this._skSize + this._pkSize + 32,
         this._skSize + this._pkSize + 64,
       );
-
+      this._debug_cca_decap.z = structuredClone(z);
       const m2 = this._decap(ct, sk2);
+      this._debug_cca_decap.m2 = structuredClone(m2);
       const [k2, r2] = g(m2, hpk);
+      this._debug_cca_decap.k2 = structuredClone(k2);
+      this._debug_cca_decap.r2 = structuredClone(r2);
       const kBar = kdf(z, ct);
+      this._debug_cca_decap.kBar = structuredClone(kBar);
       const ct2 = this._encap(pk, m2, r2);
-      return constantTimeCompare(ct, ct2) === 1 ? k2 : kBar;
+      this._debug_cca_decap.ct2 = structuredClone(ct2)
+      const success = constantTimeCompare(ct, ct2) === 1
+      this._debug_cca_decap.success = success
+      return success ? k2 : kBar;
     } catch (e: unknown) {
       throw new MlKemError(e);
     }
@@ -295,6 +439,12 @@ export class MlKemBase {
     sk.set(pk, this._skSize);
     sk.set(pkh, this._skSize + this._pkSize);
     sk.set(z, this._skSize + this._pkSize + 32);
+    this._debug_cca_keygen = structuredClone({
+      skBody: skBody,
+      pk: pk,
+      hpk: pkh,
+      z: z,
+    })
     return [pk, sk];
   }
 
@@ -312,29 +462,40 @@ export class MlKemBase {
     const a = this._sampleMatrix(publicSeed, false);
     const s = this._sampleNoise1(noiseSeed, 0, this._k);
     const e = this._sampleNoise1(noiseSeed, this._k, this._k);
-
+    this._debug_cpa_keygen.d = structuredClone(cpaSeed);
+    this._debug_cpa_keygen.rho = structuredClone(publicSeed);
+    this._debug_cpa_keygen.sigma = structuredClone(noiseSeed);
+    this._debug_cpa_keygen.AHat = structuredClone(a);
+    this._debug_cpa_keygen.s = structuredClone(s);
+    this._debug_cpa_keygen.e = structuredClone(e);
     // perform number theoretic transform on secret s
     for (let i = 0; i < this._k; i++) {
       s[i] = ntt(s[i]);
       s[i] = reduce(s[i]);
       e[i] = ntt(e[i]);
     }
-
+    this._debug_cpa_keygen.sHat = structuredClone(s);
+    this._debug_cpa_keygen.eHat = structuredClone(e);
     // KEY COMPUTATION
     // pk = A*s + e
     const pk = new Array<Array<number>>(this._k);
+    const A_S_mult = new Array<Array<number>>(this._k);
     for (let i = 0; i < this._k; i++) {
-      pk[i] = polyToMont(multiply(a[i], s));
-      pk[i] = add(pk[i], e[i]);
+      A_S_mult[i] = polyToMont(multiply(a[i], s));
+    }
+    this._debug_cpa_keygen.A_S_mult = structuredClone(A_S_mult);
+    for (let i = 0; i < this._k; i++) {
+      pk[i] = add(A_S_mult[i], e[i]);
       pk[i] = reduce(pk[i]);
     }
-
+    this._debug_cpa_keygen.tHat = structuredClone(pk);
     // PUBLIC KEY
     // turn polynomials into byte arrays
     const pubKey = new Uint8Array(this._pkSize);
     for (let i = 0; i < this._k; i++) {
       pubKey.set(polyToBytes(pk[i]), i * 384);
     }
+    this._debug_cpa_keygen.tBytes = pubKey.slice(0, this._skSize);
     // append public seed
     pubKey.set(publicSeed, this._skSize);
 
@@ -377,29 +538,46 @@ export class MlKemBase {
     const r = this._sampleNoise1(seed, 0, this._k);
     const e1 = this._sampleNoise2(seed, this._k, this._k);
     const e2 = this._sampleNoise2(seed, this._k * 2, 1)[0];
+    this._debug_cpa_encrypt.tHat = structuredClone(tHat);
+    this._debug_cpa_encrypt.rho = structuredClone(rho);
+    this._debug_cpa_encrypt.AHat = structuredClone(a);
+    this._debug_cpa_encrypt.rPrime = structuredClone(r);
+    this._debug_cpa_encrypt.e1 = structuredClone(e1);
+    this._debug_cpa_encrypt.e2 = structuredClone(e2);
 
     // perform number theoretic transform on random vector r
     for (let i = 0; i < this._k; i++) {
       r[i] = ntt(r[i]);
       r[i] = reduce(r[i]);
     }
-
+    this._debug_cpa_encrypt.rHat = structuredClone(r);
     // u = A*r + e1
     const u = new Array<Array<number>>(this._k);
     for (let i = 0; i < this._k; i++) {
       u[i] = multiply(a[i], r);
+    }
+    this._debug_cpa_encrypt.uHat = structuredClone(u);
+    for (let i = 0; i < this._k; i++) {
       u[i] = nttInverse(u[i]);
+    }
+    this._debug_cpa_encrypt.uPrime = structuredClone(u);
+    for (let i = 0; i < this._k; i++) {
       u[i] = add(u[i], e1[i]);
       u[i] = reduce(u[i]);
     }
 
     // v = tHat*r + e2 + m
     const m = polyFromMsg(msg);
+    this._debug_cpa_encrypt.mPrime = structuredClone(m);
     let v = multiply(tHat, r);
+    this._debug_cpa_encrypt.vHat = structuredClone(v);
     v = nttInverse(v);
+    this._debug_cpa_encrypt.vPrime = structuredClone(v);
     v = add(v, e2);
     v = add(v, m);
     v = reduce(v);
+    this._debug_cpa_encrypt.u = structuredClone(u);
+    this._debug_cpa_encrypt.v = structuredClone(v)
 
     // compress
     const ret = new Uint8Array(this._compressedUSize + this._compressedVSize);
@@ -425,14 +603,21 @@ export class MlKemBase {
 
     const privateKeyPolyvec = this._polyvecFromBytes(sk);
 
+    this._debug_cpa_decrypt.sHat = structuredClone(privateKeyPolyvec);
+    this._debug_cpa_decrypt.u = structuredClone(u);
+    this._debug_cpa_decrypt.v = structuredClone(v);
+
     for (let i = 0; i < this._k; i++) {
       u[i] = ntt(u[i]);
     }
-
+    this._debug_cpa_decrypt.uHat = structuredClone(u);
     let mp = multiply(privateKeyPolyvec, u);
+    this._debug_cpa_decrypt.vHat = structuredClone(mp);
     mp = nttInverse(mp);
+    this._debug_cpa_decrypt.vPrime = structuredClone(mp);
     mp = subtract(v, mp);
     mp = reduce(mp);
+    this._debug_cpa_decrypt.mPrime = structuredClone(mp);
     return polyToMsg(mp);
   }
 
