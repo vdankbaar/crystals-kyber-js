@@ -1,0 +1,3 @@
+Install deno first.
+Compile by running: deno run -A dnt.ts 1.0.0
+You might need to update the .npmignore file to change '/src' to '/src/**/*' to correctly publish a new version
